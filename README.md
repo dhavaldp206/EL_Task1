@@ -61,3 +61,84 @@ Open your terminal or command prompt and run the following command, **replacing 
 nmap -sS 192.168.1.0/24
 ```
 Nmap will now send packets to every potential host on your network and report back which hosts are up and which of their ports are open. This may take a few minutes.
+
+### Step 4: Research common services running on those ports
+
+🔹 Port 53 (TCP)
+Service: DNS (Domain Name System)
+
+Used By: DNS servers (like BIND or Microsoft DNS)
+
+Function: Resolves domain names (like google.com) to IP addresses (like 142.250.195.78).
+
+Common Usage:
+
+Used by routers, DNS servers, and internal network services.
+
+Usually runs over UDP, but TCP is used for larger queries or zone transfers.
+
+Security Concerns:
+
+Open TCP 53 can be abused for DNS amplification attacks or data exfiltration.
+
+Should be monitored and restricted if not required for external queries.
+
+🔹 Port 135 (TCP)
+Service: Microsoft RPC (Remote Procedure Call)
+
+Used By: Windows systems for DCOM, WMI, and various service communications.
+
+Function: Facilitates communication between Windows components, including remote management tasks.
+
+Common Usage:
+
+Used by Windows services like Windows Management Instrumentation (WMI).
+
+Security Concerns:
+
+Historically targeted by malware (e.g., MSBlaster worm).
+
+Should be restricted to trusted hosts only within a LAN.
+
+🔹 Port 139 (TCP)
+Service: NetBIOS Session Service
+
+Used By: Older versions of Windows file and printer sharing.
+
+Function: Allows computers to share files and printers over a local network.
+
+Common Usage:
+
+Used in Windows networks for backward compatibility.
+
+Security Concerns:
+
+May expose shared folders or usernames if unprotected.
+
+Often disabled in modern networks in favor of SMB over port 445.
+
+🔹 Port 445 (TCP)
+Service: SMB (Server Message Block) / Microsoft-DS
+
+Used By: Windows File Sharing, Active Directory, and printer sharing.
+
+Function: Allows access to shared files, printers, and named pipes over the network.
+
+Common Usage:
+
+Used heavily in Windows networking for sharing files and domain controller communication.
+
+Security Concerns:
+
+Frequently targeted by ransomware (like WannaCry).
+
+Should be disabled or firewalled off from public internet.
+
+Always keep SMB services up-to-date.
+
+✅ Summary Table
+Port	Protocol	Common Service	Purpose	Risk Level	Recommendation
+53	TCP	DNS	Resolves domain names	Medium	Restrict access if not a DNS server
+135	TCP	Microsoft RPC	Windows inter-process calls	High	Block externally, use firewall
+139	TCP	NetBIOS Session	Legacy Windows sharing	Medium	Disable if not needed
+445	TCP	SMB / Microsoft-DS	Windows file and printer share	High	Disable on public, patch regularly
