@@ -1,0 +1,17 @@
+# Nmap 7.97 scan initiated Mon Jun 23 19:02:37 2025 as: "C:\\Program Files (x86)\\Nmap\\nmap.exe" -sS -oN C:\\Users\\Vijay\\Documents\\scan-results.txt 192.168.196.0/24
+Nmap scan report for 192.168.196.49
+Host is up (0.0060s latency).
+Not shown: 999 closed tcp ports (reset)
+PORT   STATE SERVICE
+53/tcp open  domain
+MAC Address: 0E:08:45:03:DB:6F (Unknown)
+
+Nmap scan report for 192.168.196.76
+Host is up (0.00065s latency).
+Not shown: 997 closed tcp ports (reset)
+PORT    STATE SERVICE
+135/tcp open  msrpc
+139/tcp open  netbios-ssn
+445/tcp open  microsoft-ds
+
+# Nmap done at Mon Jun 23 19:03:41 2025 -- 256 IP addresses (2 hosts up) scanned in 64.43 seconds
