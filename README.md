@@ -62,10 +62,10 @@ This performs a TCP SYN scan over all devices on your local network.
 
 Now, run the Nmap scan. We will use the `-sS` flag, which performs a TCP SYN scan (also known as a "half-open" or "stealth" scan). It's fast and less likely to be logged by target systems.
 
-Open your terminal or command prompt and run the following command, **replacing `192.168.1.0/24` with your actual network range**.
+Open your terminal or command prompt and run the following command, **replacing `192.168.196.0/24` with your actual network range**.
 
 ```sh
-nmap -sS 192.168.1.0/24
+nmap -sS 192.168.196.0/24
 ```
 Nmap will now send packets to every potential host on your network and report back which hosts are up and which of their ports are open. This may take a few minutes.
 
