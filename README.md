@@ -41,15 +41,22 @@ Before you can scan, you need to know what to scan. You must identify the IP add
     ipconfig
     ```
     Look for your "Wireless LAN adapter" or "Ethernet adapter". Note the `IPv4 Address` (e.g., `192.168.1.15`) and the `Subnet Mask` (e.g., `255.255.255.0`). A subnet mask of `255.255.255.0` means your network range is `192.168.1.0/24`.
+    🌐 Step: Calculate Local IP Range
+The subnet mask 255.255.255.0 means you're working within a /24 network.
 
-*   **On macOS or Linux:**
-    Open a terminal and type:
-    ```sh
-    ifconfig
-    # or a more modern command:
-    ip a
-    ```
-    Look for your active network interface (e.g., `en0` on Mac, `eth0` or `wlan0` on Linux). Find the `inet` address. If your IP is `192.168.1.15`, your network range is likely `192.168.1.0/24`. The `/24` is CIDR notation for the `255.255.255.0` subnet mask and means Nmap will scan all 256 addresses in that range (from `192.168.1.0` to `192.168.1.255`).
+So your local IP range is:
+
+192.168.196.0/24
+That means Nmap will scan:
+
+192.168.196.1 to 192.168.196.254
+▶️ Next Step: Run Nmap Scan
+Open your Command Prompt or PowerShell.
+
+Type and run:
+
+nmap -sS 192.168.196.0/24
+This performs a TCP SYN scan over all devices on your local network.
 
 ### Step 3: Run the Nmap Scan
 
@@ -142,3 +149,68 @@ Port	Protocol	Common Service	Purpose	Risk Level	Recommendation
 135	TCP	Microsoft RPC	Windows inter-process calls	High	Block externally, use firewall
 139	TCP	NetBIOS Session	Legacy Windows sharing	Medium	Disable if not needed
 445	TCP	SMB / Microsoft-DS	Windows file and printer share	High	Disable on public, patch regularly
+
+### Step 5: 🔐 Potential Security Risks from Open Ports
+🔹 1. Port 53 (TCP) – DNS
+Risk Type:
+
+DNS Amplification Attacks – Can be abused in DDoS attacks if misconfigured.
+
+Zone Transfer Leakage – If zone transfers are not restricted, attackers can gather internal DNS records.
+
+Data Tunneling – Malicious users can hide stolen data inside DNS requests.
+
+Real-World Impact:
+Could allow attackers to discover internal systems or exfiltrate sensitive data.
+
+🔹 2. Port 135 (TCP) – Microsoft RPC
+Risk Type:
+
+Remote Code Execution (RCE) – Has been exploited in past malware (e.g., MS Blaster).
+
+Information Disclosure – Attackers can enumerate services running on a Windows machine.
+
+Real-World Impact:
+Could allow unauthorized access or full system compromise.
+
+🔹 3. Port 139 (TCP) – NetBIOS
+Risk Type:
+
+Data Leakage – Shares, usernames, and device information can be revealed.
+
+Pass-the-Hash Attacks – Attackers could capture and reuse hashed credentials.
+
+Real-World Impact:
+Useful in lateral movement during internal network attacks.
+
+🔹 4. Port 445 (TCP) – SMB
+Risk Type:
+
+Ransomware Entry Point – Used in major attacks like WannaCry, EternalBlue.
+
+Unauthorized File Access – Open shares could allow access to sensitive data.
+
+Remote Code Execution – Many historical exploits target this port.
+
+Real-World Impact:
+One of the most dangerous ports if left exposed or unpatched — can lead to complete system takeover.
+
+📌 General Risks of Open Ports
+Attack Surface Expansion – More open ports = more opportunities for attackers.
+
+Reconnaissance Target – Open ports reveal services and OS fingerprinting details.
+
+Unauthorized Access – Weak or default configurations may be exploited.
+
+Malware Spread – Worms often use open ports to propagate across networks.
+
+✅ Security Best Practices
+🔒 Close unused ports in firewall/router settings.
+
+🔄 Patch systems regularly to fix known vulnerabilities.
+
+🔐 Use strong authentication and restrict access by IP.
+
+📊 Monitor and log all access to critical services.
+
+
